@@ -8,17 +8,6 @@
 
     <form novalidate class="md-layout" @submit.prevent="submitEvent">
       <div
-        class="md-layout-item md-xsmall-size-100 md-small-size-100 md-medium-size100 md-large-size-75 md-xlarge-size-75"
-      >
-        <md-field :class="getValidationClass('eventName')">
-          <label for="first-name">Nome do Evento</label>
-          <md-input name="event-name" id="event-name" v-model="form.eventName" :disabled="sending" />
-          <span class="md-error" v-if="!$v.form.eventName.required">The first name is required</span>
-          <span class="md-error" v-else-if="!$v.form.eventName.minlength">Invalid first name</span>
-        </md-field>
-      </div>
-
-      <div
         class="md-layout-item md-xsmall-size-100 md-small-size-100 md-medium-size-45 md-large-size-35 md-xlarge-size-35"
       >
         <md-datepicker v-model="form.eventDate" :class="getValidationClass('eventDate')" />
@@ -70,7 +59,6 @@ export default {
 
   data: () => ({
     form: {
-      eventName: null,
       subject: null,
       eventDate: new Date()
     },
@@ -80,10 +68,6 @@ export default {
 
   validations: {
     form: {
-      eventName: {
-        required,
-        minLength: minLength(3)
-      },
       eventDate: {
         required
       },
@@ -94,7 +78,6 @@ export default {
       }
     }
   },
-
   methods: {
     getValidationClass(fieldName) {
       const field = this.$v.form[fieldName];
@@ -109,7 +92,6 @@ export default {
     submitEvent() {
       let now = new Date();
       let evento = {
-        nome: this.form.nome,
         data_evento: this.form.eventDate,
         assunto: this.form.subject
       };
@@ -118,15 +100,14 @@ export default {
         .post(process.env.ROOT_API.concat("eventos/"), evento, config)
         .then(response => {
           alert(response);
-          this.loading = false
+          this.loading = false;
         })
         .catch(e => {
           alert(e);
-          this.loading = false
+          this.loading = false;
         });
 
       this.loading = true;
-  
     }
   }
 };
